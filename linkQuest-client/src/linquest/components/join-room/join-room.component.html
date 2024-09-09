@@ -1,0 +1,6 @@
+<form [formGroup]="joinRoomForm">
+    <input type="text" formControlName="name" placeholder="User Name">
+    <input type="text" formControlName="color" placeholder="Color">
+    <input type="text" formControlName="roomname" placeholder="Room Name">
+</form>
+<button (click)="send()">Join</button>
