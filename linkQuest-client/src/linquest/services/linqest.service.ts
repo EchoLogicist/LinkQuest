@@ -17,11 +17,23 @@ export class LinqestService {
       console.log(`${user}: ${message}`);
     });
 
+    this.hubConnection.on('StartGame', (user: string, message: string) => {
+      console.log(`${user}: ${message}`);
+    });
+
+    this.hubConnection.on('ConnectedUser', (user: any) => {
+      console.log(user);
+    });
+
+    this.hubConnection.on('messages', (user: any) => {
+      console.log(user);
+    });
+
     this.hubConnection.start().catch(err => console.error(err));
   }
 
-  public sendMessage(user: string, message: string): void {
-    this.hubConnection.invoke('SendMessage', user, message)
+  public joinRoom(userData : {user: string, roomname: string, color: string}): void {
+    this.hubConnection.invoke('JoinRoom', userData).then((res) => console.log(res))
       .catch(err => console.error(err));
   }
 }
