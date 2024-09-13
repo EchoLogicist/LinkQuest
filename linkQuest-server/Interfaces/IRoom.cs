@@ -8,7 +8,11 @@ namespace linkQuest_server.Interfaces
 {
     public interface IRoom
     {
-        bool Exists(string roomName);
-        void UpdateRoom(string roomName);
+        bool RoomOpen(string roomName);
+        void UpdateRoom(string roomName, bool isLocked = false, bool isGameStarted = false);
+        bool GameStarted(string roomName);
+        bool RoomExists(string roomName);
+        Room? GetRoom(string roomName);
+        bool UpdateAvailabeCount(string roomName);
     }
 }
