@@ -1,0 +1,30 @@
+.linquest{
+    margin: 10px;
+    position: relative;
+
+    .each-cell{
+        position: absolute;
+        top: 0;
+    }
+
+    .each-row{
+       display: flex;
+       position: relative;
+    }
+}
+
+.player-color{
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+.players-tab{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.active-user{
+    border: 1px solid green;
+}

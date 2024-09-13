@@ -62,6 +62,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "linkQuest-client:build",
+            "port": 4500
+          },
           "configurations": {
             "production": {
               "buildTarget": "linkQuest-client:build:production"
