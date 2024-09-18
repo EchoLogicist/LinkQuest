@@ -1,0 +1,11 @@
+@if(!hasJoined){
+    <form [formGroup]="joinRoomForm">
+        <input type="text" formControlName="name" placeholder="User Name">
+        <input type="text" formControlName="color" placeholder="Color">
+        <input type="text" formControlName="roomname" placeholder="Room Name">
+        <button type="submit" (click)="send()">Join</button>
+    </form>
+}
+@else {
+    <h1>Waiting for others</h1>
+}

@@ -1,0 +1,25 @@
+@if(gameObject && userObject)
+{
+<div>
+    @for (item of userObject; track $index) {
+        <div class="players-tab" [class.active-user]="item.myTurn">
+            <div class="player-color" [style]="{'background-color' : item.color}"></div>
+            <span>{{item.count}}</span>
+            <span>{{item.name}}</span>
+        </div>
+    }
+</div>
+<div class="linquest">
+    @for (eachRow of gameObject; track $index; let rowIndex = $index) {
+    <div class="each-row" [style]="{'top' : rowIndex*31 + 'px'}">
+        @for (object of eachRow; track $index; let colIndex = $index) {
+        <app-cell class="each-cell" [cellObject]="object" [rowIndex]="rowIndex" [columnIndex]="colIndex"
+            [users]="userObject" [style]="{'left' : $index*30 + 'px'}"></app-cell>
+        }
+    </div>
+    }
+</div>
+}
+@else {
+<a href="../joinRoom">Rejoin</a>
+}
