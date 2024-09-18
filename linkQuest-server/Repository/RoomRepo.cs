@@ -11,15 +11,38 @@ namespace linkQuest_server.Repository
     {
         private static List<Room> rooms = new List<Room>{ new Room() };
 
-        public bool Exists(string roomName)
+        public bool RoomOpen(string roomName)
         {
             return rooms.Exists((room) => room.name == roomName && !room.isLocked);
         }
 
-        public void UpdateRoom(string roomName)
+        public bool GameStarted(string roomName)
+        {
+            return rooms.Exists((room) => room.name == roomName && room.gameStated);
+        }
+
+        public void UpdateRoom(string roomName, bool isLocked = false, bool isGameStarted = false)
         {
             var index = rooms.FindIndex((room) => room.name == roomName);
-            rooms[index].isLocked = true;
+            rooms[index].isLocked = isLocked;
+            rooms[index].gameStated = isGameStarted;
+            if(isGameStarted) rooms[index].cellsPending = (int)Math.Pow(rooms[index].dimension, 2);
+        }
+
+        public bool RoomExists(string roomName)
+        {
+            return rooms.Exists((room) => room.name == roomName);
+        }
+
+        public Room? GetRoom(string roomName)
+        {
+            return rooms.Find((room) => room.name == roomName);
+        }
+
+        public bool UpdateAvailabeCount(string roomName){
+            var room = rooms.Find((room) => room.name == roomName)!;
+            room.cellsPending -= 1;
+            return true;
         }
     }
 }

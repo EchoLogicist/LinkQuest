@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { filter, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,33 +9,73 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 export class LinqestService {
 
   private hubConnection: HubConnection;
+  private connectedUsers : any;
+  private gameobjectsSubject : Subject<any> = new Subject()
+  gameObject$ = this.gameobjectsSubject.asObservable()
+  private gameUsersSubject : Subject<any> = new Subject()
+  usersObject$ = this.gameUsersSubject.asObservable()
 
-  constructor() {
+
+  constructor(private router: Router) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('http://localhost:5271/linkquest')
+      .withUrl('http://192.168.173.94:5271/linkquest')
       .build();
 
-    this.hubConnection.on('ReceiveMessage', (user: string, message: string) => {
+    this.hubConnection.on('GroupNotification', (user: string, message: string) => {
       console.log(`${user}: ${message}`);
     });
 
     this.hubConnection.on('StartGame', (user: string, message: string) => {
-      console.log(`${user}: ${message}`);
+      this.router.navigateByUrl("linkquest")
     });
 
     this.hubConnection.on('ConnectedUser', (user: any) => {
+      this.gameUsersSubject.next(user)
+    });
+
+    this.hubConnection.on('IndividualNotification', (user: any) => {
       console.log(user);
     });
 
-    this.hubConnection.on('messages', (user: any) => {
-      console.log(user);
-    });
+    this.hubConnection.on('GameObjects', (gameObject: any) => {
+      this.gameobjectsSubject.next(gameObject)
+    })
+
+    this.hubConnection.on('EndGame', (message: any) => {
+      console.log(message)
+    })
+
+    this.hubConnection.on('sendTurn', (message: any) => {
+      console.log(message)
+    })
+    
+    this.router.events.pipe(filter((rs): rs is NavigationEnd => rs instanceof NavigationEnd))
+    .subscribe(event => {
+      if (
+        event.id === 1 &&
+        event.url === event.urlAfterRedirects
+      ) {
+          sessionStorage.clear()
+      }
+    })
 
     this.hubConnection.start().catch(err => console.error(err));
   }
 
-  public joinRoom(userData : {user: string, roomname: string, color: string}): void {
-    this.hubConnection.invoke('JoinRoom', userData).then((res) => console.log(res))
+  joinRoom(userData : {user: string, roomname: string, color: string}) {
+    return this.hubConnection.invoke('JoinRoom', {...userData, connectionId : this.hubConnection.connectionId}).then((res) => res)
       .catch(err => console.error(err));
+  }
+
+  getGameObject(roomName: string){
+    return this.hubConnection.invoke('GameObject', roomName)
+      .catch(err => console.error(err));
+  }
+
+  getConnectedUsers = () => this.connectedUsers
+
+  updateCell(cellInfo : {rowIndex: number, columnIndex: number, cell: string}){
+    return this.hubConnection.invoke('UpdateCell', cellInfo)
+    .catch(err => console.error(err));
   }
 }

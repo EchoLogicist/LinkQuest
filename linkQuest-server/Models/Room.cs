@@ -11,5 +11,8 @@ namespace linkQuest_server.Models
         public string name {get; set;} = "testRoom1";
         public int playersCount {get; set;} = 4;
         public bool isLocked {get; set;} = false;
+        public bool gameStated {get; set;} = false;
+        public int dimension {get; set;} = 5;
+        public int cellsPending {get; set;}
     }
 }
