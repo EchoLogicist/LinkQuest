@@ -83,7 +83,7 @@ namespace linkQuest_server
         private void UpdateContextId(string contextId, Users user){
             var connectonId = _user.GetConnectionId(user.Name, user.RoomName);
             Groups.RemoveFromGroupAsync(connectonId, user.RoomName);
-            _user.UpdateConnectionId(contextId, user);           
+            _user.UpdateConnectionId(contextId, user);  
         }
     }
 }
