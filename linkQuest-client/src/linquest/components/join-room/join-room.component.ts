@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 export class JoinRoomComponent {
 
   joinRoomForm : any
+  createRoomForm : any
   hasJoined: boolean = false
 
   constructor(private _linqService: LinqestService, private _fb: FormBuilder){
@@ -19,6 +20,11 @@ export class JoinRoomComponent {
       name : ['',[Validators.required]],
       color : ['',[Validators.required]],
       roomname : ['testRoom1',[Validators.required]],
+    })
+
+    this.createRoomForm = this._fb.group({
+      dimension : ['',[Validators.required]],
+      playersCount : ['',[Validators.required]],
     })
   }
   
@@ -32,6 +38,15 @@ export class JoinRoomComponent {
         document.documentElement.style.setProperty('--player-hover-color', this.joinRoomForm.value.color);
       } 
       else console.log(res)
+    })
+  }
+
+  CreateRoom(){
+    this._linqService.createRoom(this.createRoomForm.value).subscribe({
+      next: (res) => {
+        console.log(res)
+      },
+      error: (err) => console.error(err)
     })
   }
 }

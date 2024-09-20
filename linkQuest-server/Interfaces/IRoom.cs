@@ -9,10 +9,11 @@ namespace linkQuest_server.Interfaces
     public interface IRoom
     {
         bool RoomOpen(string roomName);
-        void UpdateRoom(string roomName, bool isLocked = false, bool isGameStarted = false);
+        void UpdateRoom(string roomName, State state = State.NEW);
         bool GameStarted(string roomName);
         bool RoomExists(string roomName);
         Room? GetRoom(string roomName);
         bool UpdateAvailabeCount(string roomName);
+        string CreateRoom(Room room);
     }
 }

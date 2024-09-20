@@ -28,15 +28,16 @@ namespace linkQuest_server
         }
         public async Task<object> JoinRoom(Users user)
         {
-           
-            if(_rooms.RoomOpen(user.RoomName)){
+            var roomInfo = _rooms.GetRoom(user.RoomName)!;
+
+            if(roomInfo != null && roomInfo.name == user.RoomName && !roomInfo.isLocked){
                 await Groups.AddToGroupAsync(Context.ConnectionId, user.RoomName);
                 _user.AddUser(user);
-                await Clients.Group(user.RoomName)
-                .SendAsync("GroupNotification", "Lets Program Bot", $"{user.Name} has Joined the Room", DateTime.Now);
+                await Clients.Group(user.RoomName).SendAsync("GroupNotification", "Lets Program Bot", $"{user.Name} has Joined the Room", DateTime.Now);
 
                 var users = _user.GetUsers( user.RoomName)!;
-                if(users.Count.ToString() == _configuration.GetSection("NumberOfUser").Value){
+                if(users.Count == roomInfo.playersCount)
+                {
                     _rooms.UpdateRoom(user.RoomName);   
                     await Clients.Group(user.RoomName).SendAsync("StartGame", "Lets Program Bot", $"Game Start", DateTime.Now);                 
                     _user.getUserTurn();
@@ -46,7 +47,8 @@ namespace linkQuest_server
                 return await Task.Run(() => "Success");
             }
             else {
-                if(_rooms.RoomExists(user.RoomName)){
+                if(roomInfo != null)
+                {
                     if(_user.IsUserExists(user.Name, user.RoomName)){
                         await Groups.AddToGroupAsync(Context.ConnectionId, user.RoomName);
                         UpdateContextId(Context.ConnectionId, user);

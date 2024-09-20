@@ -27,4 +27,11 @@ namespace linkQuest_server.Models
         public int RowIndex {get; set;}
         public int ColumnIndex {get; set;}
     }
+
+    public class LinkQuestContainer
+    {
+        public LinkQuest? recentUpdateCell {get; set;}
+        public CellUpdate? cellInfo {get; set;}
+        public LinkQuest[,]? GameObject {get; set;}
+    }
 }

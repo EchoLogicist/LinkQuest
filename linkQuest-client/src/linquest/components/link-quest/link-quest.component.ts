@@ -19,7 +19,11 @@ export class LinkQuestComponent implements OnInit{
 
   ngOnInit(): void {
     this.linqService.gameObject$.pipe(map((j) => JSON.parse(j))).subscribe((res) => {
-      this.gameObject = res
+      if(res.recentUpdateCell){
+        res.recentUpdateCell[res.cellInfo.Cell] = {... res.recentUpdateCell[res.cellInfo.Cell], isRecent : true}
+        res.GameObject[res.cellInfo.RowIndex][res.cellInfo.ColumnIndex] = res.recentUpdateCell
+      }
+      this.gameObject = res.GameObject
       console.log(res)
     })
 

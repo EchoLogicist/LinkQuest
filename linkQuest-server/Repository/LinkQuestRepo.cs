@@ -9,7 +9,7 @@ namespace linkQuest_server.Repository
 {
     public class LinkQuestRepo : ILinkQuest
     {
-        private static Dictionary<string, LinkQuest[,]> _linkQuests = new Dictionary<string, LinkQuest[,]>();
+        private static Dictionary<string, LinkQuestContainer> _linkQuests = new Dictionary<string, LinkQuestContainer>();
         private readonly IRoom _room;
         private readonly IUser _user;
 
@@ -18,7 +18,7 @@ namespace linkQuest_server.Repository
             _room = room;
             _user = user;
         }
-        public LinkQuest[,] InitializeObject(string roomName)
+        public LinkQuestContainer InitializeObject(string roomName)
         {
             var room = _room.GetRoom(roomName)!;
 
@@ -33,15 +33,16 @@ namespace linkQuest_server.Repository
                         gameObject[i, j] = new LinkQuest();
                     }
                 }
-                _linkQuests[roomName] = gameObject;
-                _room.UpdateRoom(roomName, true, true);
+                _linkQuests[roomName] = new LinkQuestContainer{GameObject = gameObject};
+                _room.UpdateRoom(roomName, State.STARTED);
             }
             return _linkQuests[roomName];
         }
 
         public bool UpdateCell(CellUpdate update, string userName, string roomName)
         {
-            var gameObject = _linkQuests[roomName];
+            var gameObject = _linkQuests[roomName].GameObject;
+            _linkQuests[roomName].cellInfo = update;
             LinkQuest tempObj;
             var retainMyTurn = false;
 
@@ -49,7 +50,7 @@ namespace linkQuest_server.Repository
             {
                 case "Top":
                     gameObject[update.RowIndex, update.ColumnIndex].Top = new Cell { Checked = true, UserName = userName };
-
+                    _linkQuests[roomName].recentUpdateCell = gameObject[update.RowIndex, update.ColumnIndex];
                     if (update.RowIndex >= 1)
                     {
                         gameObject[update.RowIndex - 1, update.ColumnIndex].Bottom = new Cell { Checked = true, UserName = userName };
@@ -77,8 +78,8 @@ namespace linkQuest_server.Repository
                     return true;
 
                 case "Bottom":
-                    gameObject = _linkQuests[roomName];
                     gameObject[update.RowIndex, update.ColumnIndex].Bottom = new Cell { Checked = true, UserName = userName };
+                    _linkQuests[roomName].recentUpdateCell = gameObject[update.RowIndex, update.ColumnIndex];
 
                     tempObj = gameObject[update.RowIndex, update.ColumnIndex];
                     if (tempObj.Top.Checked && tempObj.Bottom.Checked && tempObj.Left.Checked && tempObj.Right.Checked)
@@ -92,8 +93,8 @@ namespace linkQuest_server.Repository
                     return true;
 
                 case "Right":
-                    gameObject = _linkQuests[roomName];
                     gameObject[update.RowIndex, update.ColumnIndex].Right = new Cell { Checked = true, UserName = userName };
+                    _linkQuests[roomName].recentUpdateCell = gameObject[update.RowIndex, update.ColumnIndex];
 
                     tempObj = gameObject[update.RowIndex, update.ColumnIndex];
                     if (tempObj.Top.Checked && tempObj.Bottom.Checked && tempObj.Left.Checked && tempObj.Right.Checked)
@@ -107,8 +108,8 @@ namespace linkQuest_server.Repository
                     return true;
 
                 case "Left":
-                    gameObject = _linkQuests[roomName];
                     gameObject[update.RowIndex, update.ColumnIndex].Left = new Cell { Checked = true, UserName = userName };
+                    _linkQuests[roomName].recentUpdateCell = gameObject[update.RowIndex, update.ColumnIndex];
 
                     if (update.ColumnIndex >= 1)
                     {

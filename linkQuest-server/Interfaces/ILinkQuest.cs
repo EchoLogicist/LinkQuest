@@ -8,7 +8,7 @@ namespace linkQuest_server.Interfaces
 {
     public interface ILinkQuest
     {
-        LinkQuest[,] InitializeObject(string roomName);
+        LinkQuestContainer InitializeObject(string roomName);
         bool UpdateCell(CellUpdate update, string userName, string roomName);
     }
 }

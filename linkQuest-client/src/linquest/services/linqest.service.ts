@@ -1,10 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { filter, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LinqestService {
 
@@ -16,9 +17,9 @@ export class LinqestService {
   usersObject$ = this.gameUsersSubject.asObservable()
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private _httpClient : HttpClient) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('http://192.168.173.94:5271/linkquest')
+      .withUrl('http://localhost:5271/linkquest')
       .build();
 
     this.hubConnection.on('GroupNotification', (user: string, message: string) => {
@@ -77,5 +78,9 @@ export class LinqestService {
   updateCell(cellInfo : {rowIndex: number, columnIndex: number, cell: string}){
     return this.hubConnection.invoke('UpdateCell', cellInfo)
     .catch(err => console.error(err));
+  }
+
+  createRoom(obj : {name : string, dimension: string, playersCount : string}){
+    return this._httpClient.post('http://localhost:5271/api/JoinRoom', obj)
   }
 }

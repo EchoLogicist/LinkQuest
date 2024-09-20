@@ -9,7 +9,7 @@ namespace linkQuest_server.Repository
 {
     public class RoomRepo : IRoom
     {
-        private static List<Room> rooms = new List<Room>{ new Room() };
+        private static List<Room> rooms = new List<Room>();
 
         public bool RoomOpen(string roomName)
         {
@@ -18,15 +18,16 @@ namespace linkQuest_server.Repository
 
         public bool GameStarted(string roomName)
         {
-            return rooms.Exists((room) => room.name == roomName && room.gameStated);
+            return rooms.Exists((room) => room.name == roomName && room.gameState == State.STARTED);
         }
 
-        public void UpdateRoom(string roomName, bool isLocked = false, bool isGameStarted = false)
+        public void UpdateRoom(string roomName, State state = State.NEW)
         {
             var index = rooms.FindIndex((room) => room.name == roomName);
-            rooms[index].isLocked = isLocked;
-            rooms[index].gameStated = isGameStarted;
-            if(isGameStarted) rooms[index].cellsPending = (int)Math.Pow(rooms[index].dimension, 2);
+            if(index != -1 && state == State.STARTED){                
+                rooms[index].isLocked = true;
+                rooms[index].gameState = state;
+            }
         }
 
         public bool RoomExists(string roomName)
@@ -43,6 +44,29 @@ namespace linkQuest_server.Repository
             var room = rooms.Find((room) => room.name == roomName)!;
             room.cellsPending -= 1;
             return true;
+        }
+
+        public string CreateRoom(Room room)
+        {
+            try
+            {
+                room.cellsPending = (int)Math.Pow(room.dimension, 2);
+                room.name = GenerateRandomNo();
+                rooms.Add(room);
+                return room.name;                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private string GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max).ToString();
         }
     }
 }

@@ -1,9 +1,23 @@
 @if(!hasJoined){
     <form [formGroup]="joinRoomForm">
         <input type="text" formControlName="name" placeholder="User Name">
-        <input type="text" formControlName="color" placeholder="Color">
+        <!-- <input type="text" formControlName="color" placeholder="Color"> -->
+        <select formControlName="color">
+            <option value="">Select Color</option>
+            <option>Red</option>
+            <option>Yellow</option>
+            <option>Green</option>
+            <option>Orange</option>
+            <option>Black</option>
+        </select>
         <input type="text" formControlName="roomname" placeholder="Room Name">
         <button type="submit" (click)="send()">Join</button>
+    </form>
+
+    <form [formGroup]="createRoomForm">
+        <input type="text" formControlName="dimension" placeholder="Matrix">
+        <input type="text" formControlName="playersCount" placeholder="Number Of Players">
+        <button type="submit" (click)="CreateRoom()">Create</button>
     </form>
 }
 @else {

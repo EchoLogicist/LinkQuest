@@ -1,26 +1,26 @@
 <div class="cell">
     <div class="horizontal-block">
         <div class="position-relative">            
-            <div class="cell-dot-container" [style]="{'background-color' :  getColor('Top')}" (click)="markCell('Top')">
+            <div class="cell-dot-container" [class.heighlight-recent]="this.cellObject.Top?.isRecent" [style]="{'background' :  getColor('Top')}" (click)="markCell('Top')">
                 <div class="cell-dot"></div>
                 <div class="cell-dot"></div>
             </div>
-            <div class="cell-wall"></div>
+            <div class="cell-wall" [class.heighlight-recent]="this.cellObject.Top?.isRecent"></div>
         </div>
          <div class="position-relative">
-            <div class="cell-dot-container" [style]="{'background-color' :  getColor('Bottom')}" (click)="markCell('Bottom')">
+            <div class="cell-dot-container" [class.heighlight-recent]="this.cellObject.Bottom?.isRecent" [style]="{'background' :  getColor('Bottom')}" (click)="markCell('Bottom')">
                 <div class="cell-dot"></div>
                 <div class="cell-dot"></div>
             </div>
-            <div class="cell-wall"></div>
+            <div class="cell-wall" [class.heighlight-recent]="this.cellObject.Bottom?.isRecent"></div>
         </div>
     </div>
     <div class="vertical-block">
         <div>
-            <div class="cell-wall" [style]="{'background-color' :  getColor('Left')}" (click)="markCell('Left')"></div>
+            <div class="cell-wall" [class.heighlight-recent]="this.cellObject.Left?.isRecent" [style]="{'background' :  getColor('Left')}" (click)="markCell('Left')"></div>
         </div>
         <div>
-            <div class="cell-wall" [style]="{'background-color' :  getColor('Right')}" (click)="markCell('Right')"></div>
+            <div class="cell-wall" [class.heighlight-recent]="this.cellObject.Right?.isRecent" [style]="{'background' :  getColor('Right')}" (click)="markCell('Right')"></div>
         </div>
     </div>
 </div>

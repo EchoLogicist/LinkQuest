@@ -7,12 +7,19 @@ namespace linkQuest_server.Models
 {
     public class Room
     {
-        public int id {get; set;} = 1;
-        public string name {get; set;} = "testRoom1";
-        public int playersCount {get; set;} = 4;
+        public int id {get; set;}
+        public string name {get; set;} = string.Empty;
+        public int playersCount {get; set;}
         public bool isLocked {get; set;} = false;
-        public bool gameStated {get; set;} = false;
-        public int dimension {get; set;} = 5;
+        public State gameState {get; set;} = State.NEW;
+        public int dimension {get; set;}
         public int cellsPending {get; set;}
+    }
+
+    public enum State
+    {
+        NEW,
+        STARTED,
+        ENDED
     }
 }
