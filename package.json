@@ -1,0 +1,17 @@
+{
+  "name": "startingfile",
+  "version": "1.0.0",
+  "description": "it starts both client and serve side projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd linkQuest-client && ng serve",
+    "server": "cd linkQuest-server && dotnet run",
+    "start": "concurrently   \"npm run server\" \"npm run client\" "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
