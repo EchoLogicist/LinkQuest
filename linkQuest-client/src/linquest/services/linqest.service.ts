@@ -21,7 +21,7 @@ export class LinqestService {
 
   constructor(private router: Router, private _httpClient : HttpClient) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('http://192.168.133.9:5271/linkquest')
+      .withUrl('http://192.168.133.26:5271/linkquest')
       .build();
 
     this.hubConnection.on('GroupNotification', (user: string, message: string) => {
@@ -87,7 +87,7 @@ export class LinqestService {
   }
 
   createRoom(obj : {name : string, dimension: string, playersCount : string}){
-    return this._httpClient.post('http://192.168.133.9:5271/api/JoinRoom', obj)
+    return this._httpClient.post('http://192.168.133.26:5271/api/JoinRoom', obj)
   }
 
   SwitchTurns(roomName : string){
