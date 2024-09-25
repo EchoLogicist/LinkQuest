@@ -11,6 +11,12 @@ namespace linkQuest_server.Repository
     {
         private static List<Room> rooms = new List<Room>();
 
+        private readonly IConfiguration _configuration;
+
+        public RoomRepo(IConfiguration configuration)
+        {
+            _configuration = configuration;            
+        }
         public bool RoomOpen(string roomName)
         {
             return rooms.Exists((room) => room.name == roomName && !room.isLocked);
@@ -52,6 +58,7 @@ namespace linkQuest_server.Repository
             {
                 room.cellsPending = (int)Math.Pow(room.dimension, 2);
                 room.name = GenerateRandomNo();
+                room.ElapseTime = Convert.ToInt32(_configuration.GetSection("LapsTime").Value);
                 rooms.Add(room);
                 return room.name;                
             }

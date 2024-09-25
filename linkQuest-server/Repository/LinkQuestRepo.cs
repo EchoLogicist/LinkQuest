@@ -41,8 +41,9 @@ namespace linkQuest_server.Repository
 
         public bool UpdateCell(CellUpdate update, string userName, string roomName)
         {
-            var gameObject = _linkQuests[roomName].GameObject;
+            var gameObject = _linkQuests[roomName].GameObject!;
             _linkQuests[roomName].cellInfo = update;
+            var room = _room.GetRoom(roomName)!;
             LinkQuest tempObj;
             var retainMyTurn = false;
 
@@ -60,7 +61,7 @@ namespace linkQuest_server.Repository
                         {
                             gameObject[update.RowIndex - 1, update.ColumnIndex].cellOwner = userName;
                             _room.UpdateAvailabeCount(roomName);
-                            _user.updateCount(roomName, userName);
+                            _user.updateCount(roomName, userName, room.ElapseTime);
                             retainMyTurn = true;
                         }
                     }
@@ -70,10 +71,10 @@ namespace linkQuest_server.Repository
                     {
                         gameObject[update.RowIndex, update.ColumnIndex].cellOwner = userName;
                         _room.UpdateAvailabeCount(roomName);
-                        _user.updateCount(roomName, userName);
+                        _user.updateCount(roomName, userName, room.ElapseTime);
                         retainMyTurn = true;
                     }
-                    if(!retainMyTurn) _user.getUserTurn();
+                    if(!retainMyTurn) _user.getUserTurn(roomName, room.ElapseTime);
                     //_linkQuests[roomName] = gameObject;
                     return true;
 
@@ -86,9 +87,9 @@ namespace linkQuest_server.Repository
                     {
                         gameObject[update.RowIndex, update.ColumnIndex].cellOwner = userName;
                         _room.UpdateAvailabeCount(roomName);
-                        _user.updateCount(roomName, userName);
+                        _user.updateCount(roomName, userName, room.ElapseTime);
                     }
-                    else _user.getUserTurn();
+                    else _user.getUserTurn(roomName, room.ElapseTime);
                     //_linkQuests[roomName] = gameObject;
                     return true;
 
@@ -101,9 +102,9 @@ namespace linkQuest_server.Repository
                     {
                         gameObject[update.RowIndex, update.ColumnIndex].cellOwner = userName;
                         _room.UpdateAvailabeCount(roomName);
-                        _user.updateCount(roomName, userName);
+                        _user.updateCount(roomName, userName, room.ElapseTime);
                     }
-                    else _user.getUserTurn();
+                    else _user.getUserTurn(roomName, room.ElapseTime);
                     //_linkQuests[roomName] = gameObject;
                     return true;
 
@@ -120,7 +121,7 @@ namespace linkQuest_server.Repository
                         {
                             gameObject[update.RowIndex, update.ColumnIndex - 1].cellOwner = userName;
                             _room.UpdateAvailabeCount(roomName);
-                            _user.updateCount(roomName, userName);
+                            _user.updateCount(roomName, userName, room.ElapseTime);
                             retainMyTurn = true;
                         }
                     }
@@ -130,10 +131,10 @@ namespace linkQuest_server.Repository
                     {
                         gameObject[update.RowIndex, update.ColumnIndex].cellOwner = userName;
                         _room.UpdateAvailabeCount(roomName);
-                        _user.updateCount(roomName, userName);
+                        _user.updateCount(roomName, userName, room.ElapseTime);
                         retainMyTurn = true;
                     }
-                    if(!retainMyTurn) _user.getUserTurn();
+                    if(!retainMyTurn) _user.getUserTurn(roomName, room.ElapseTime);
                     //_linkQuests[roomName] = gameObject;
                     return true;
 

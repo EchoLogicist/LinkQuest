@@ -14,7 +14,7 @@ namespace linkQuest_server.Interfaces
         bool AddUser(Users user);
         bool IsUserExists(string userName, string roomName);
         bool UpdateConnectionId(string connectionId, Users user);
-        bool updateCount(string roomName, string userName);
-        void getUserTurn();
+        bool updateCount(string roomName, string userName, int timeLapse);
+        void getUserTurn(string roomName, int timeLapse);
     }
 }

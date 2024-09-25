@@ -15,16 +15,16 @@ namespace linkQuest_server
     public class communicationHub : Hub
     {
         private readonly IUser _user;
-        private readonly IConfiguration _configuration;
         private IRoom _rooms;
         private readonly ILinkQuest _linkQuest;
+        private readonly IMessage _message;
 
-        public communicationHub(IUser user, IConfiguration configuration, IRoom rooms, ILinkQuest linkQuest)
+        public communicationHub(IUser user, IRoom rooms, ILinkQuest linkQuest, IMessage message)
         {
             _user = user;
-            _configuration = configuration;
             _rooms = rooms;
             _linkQuest = linkQuest;
+            _message = message;
         }
         public async Task<object> JoinRoom(Users user)
         {
@@ -40,7 +40,7 @@ namespace linkQuest_server
                 {
                     _rooms.UpdateRoom(user.RoomName);   
                     await Clients.Group(user.RoomName).SendAsync("StartGame", "Lets Program Bot", $"Game Start", DateTime.Now);                 
-                    _user.getUserTurn();
+                    _user.getUserTurn(user.RoomName, roomInfo.ElapseTime);
                     await GameObject(user.RoomName);    
                 }
                 await SendConnectedUser(user.RoomName);
@@ -82,10 +82,22 @@ namespace linkQuest_server
             }
         }
 
+        public void SwitchTurns(string roomName){
+            var roomInfo = _rooms.GetRoom(roomName)!;
+            _user.getUserTurn(roomName, roomInfo.ElapseTime);
+            SendConnectedUser(roomName);
+        }
+
         private void UpdateContextId(string contextId, Users user){
             var connectonId = _user.GetConnectionId(user.Name, user.RoomName);
             Groups.RemoveFromGroupAsync(connectonId, user.RoomName);
             _user.UpdateConnectionId(contextId, user);           
+        }
+
+        public Task SendMessage(Message message){
+            var messages = new List<Message>();
+            if(_message.AddMessage(message)) messages = _message.GetMessages(message.RoomName);
+            return Clients.Group(message.RoomName).SendAsync("RecieveChat", messages);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace linkQuest_server.Repository
     public class UsersRepo : IUser
     {
         private static List<Users> users = new List<Users>();
-
         public bool AddUser(Users user)
         {
             users.Add(user);
@@ -37,9 +36,10 @@ namespace linkQuest_server.Repository
             return users.Exists((j) => j.Name == userName && j.RoomName == roomName);
         }
         
-        public bool updateCount(string roomName, string userName){
+        public bool updateCount(string roomName, string userName, int timeLapse){
             var user = users.Find((j) => j.Name == userName && j.RoomName == roomName)!;
             user.count += 1;
+            user.turnShiftTime = DateTime.Now.AddSeconds(timeLapse);
             return true;
         }
 
@@ -50,18 +50,25 @@ namespace linkQuest_server.Repository
             return true;
         }
 
-        public void getUserTurn(){
-            var index = users.FindIndex((j) => j.myTurn);
-            Users user = null;
-            if(index == -1 || index + 1 >= users.Count){
-                if(index + 1 >= users.Count) users[users.Count - 1].myTurn = false;
-                user = users[0];
+        public void getUserTurn(string roomName, int timeLapse){
+            var tempUsers = GetUsers(roomName);
+            var index = tempUsers.FindIndex((j) => j.myTurn);
+            if(index == -1 || index + 1 >= tempUsers.Count){
+                if(index + 1 >= tempUsers.Count) UpdateUser(tempUsers[tempUsers.Count - 1], false);
+                UpdateUser(tempUsers[0], true, timeLapse);
             } 
             else{
-                user = users[index + 1];
-                users[index].myTurn = false;
+                UpdateUser(tempUsers[index + 1], true, timeLapse);
+                //user = tempUsers[index + 1];
+                //tempUsers[index].myTurn = false;
+                UpdateUser(tempUsers[index], false);
             }
-            user.myTurn = true;
+        }
+
+        private void UpdateUser(Users user, bool myTurn, int timeLapse = 0){
+            user.myTurn = myTurn;
+            if(myTurn) user.turnShiftTime = DateTime.Now.AddSeconds(timeLapse);
+            else user.turnShiftTime = null;
         }
     }
 }

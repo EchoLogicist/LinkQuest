@@ -1,23 +1,30 @@
 @if(gameObject && userObject)
 {
-<div>
+<div class="linquest-player">
     @for (item of userObject; track $index) {
         <div class="players-tab" [class.active-user]="item.myTurn">
             <div class="player-color" [style]="{'background-color' : item.color}"></div>
             <span>{{item.count}}</span>
-            <span>{{item.name}}</span>
+            <span>{{item.name}}</span>  
+            @if (item.turnShiftTime && item.myTurn) {            
+                <app-timer [time]="item.turnShiftTime" [user]="item"></app-timer>
+            }
         </div>
     }
+    <input type="text" #inp/>
+    <button (click)="sendMessage(inp.value)">send</button>
 </div>
-<div class="linquest">
-    @for (eachRow of gameObject; track $index; let rowIndex = $index) {
-    <div class="each-row" [style]="{'top' : rowIndex*31 + 'px'}">
-        @for (object of eachRow; track $index; let colIndex = $index) {
-        <app-cell class="each-cell" [cellObject]="object" [rowIndex]="rowIndex" [columnIndex]="colIndex"
-            [users]="userObject" [style]="{'left' : $index*30 + 'px'}"></app-cell>
+<div class="linquest-container">
+    <div class="linquest">
+        @for (eachRow of gameObject; track $index; let rowIndex = $index) {
+        <div class="each-row" [style]="{'margin-top' : '-5px'}">
+            @for (object of eachRow; track $index; let colIndex = $index) {
+            <app-cell class="each-cell" [cellObject]="object" [rowIndex]="rowIndex" [columnIndex]="colIndex"
+                [users]="userObject" [style]="{'margin-left' : '-5px'}" ></app-cell>
+            }
+        </div>
         }
     </div>
-    }
 </div>
 }
 @else {

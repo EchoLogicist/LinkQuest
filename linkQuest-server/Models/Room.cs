@@ -13,6 +13,7 @@ namespace linkQuest_server.Models
         public bool isLocked {get; set;} = false;
         public State gameState {get; set;} = State.NEW;
         public int dimension {get; set;}
+        public int ElapseTime {get; set;}
         public int cellsPending {get; set;}
     }
 

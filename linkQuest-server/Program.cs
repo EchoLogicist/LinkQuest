@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
             {
                 options.AddPolicy("allowany", p =>
                 {
-                    p.WithOrigins(["http://192.168.133.63:4500","http://localhost:4500"])
+                    p.WithOrigins(["http://192.168.133.9:4500","http://localhost:4500"])
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
@@ -24,6 +24,7 @@ builder.Services.AddSingleton<IDictionary<string, Users>>(opt => new Dictionary<
 builder.Services.AddTransient<IRoom, RoomRepo>();
 builder.Services.AddTransient<ILinkQuest, LinkQuestRepo>();
 builder.Services.AddTransient<IUser, UsersRepo>();
+builder.Services.AddTransient<IMessage, chatRepo>();
 
 var app = builder.Build();
 

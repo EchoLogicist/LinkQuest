@@ -1,0 +1,7 @@
+@if ((timeLeft$ | async); as t) {
+    <span id="minutes"> {{t.minutesToDday}} </span>:
+    <span id="seconds"> {{t.secondsToDday}} </span>
+}
+@else {
+<p>--:--</p>
+}

@@ -15,11 +15,13 @@ export class LinqestService {
   gameObject$ = this.gameobjectsSubject.asObservable()
   private gameUsersSubject : Subject<any> = new Subject()
   usersObject$ = this.gameUsersSubject.asObservable()
+  private chatSubject : Subject<any> = new Subject()
+  chatObject$ = this.chatSubject.asObservable()
 
 
   constructor(private router: Router, private _httpClient : HttpClient) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('http://localhost:5271/linkquest')
+      .withUrl('http://192.168.133.9:5271/linkquest')
       .build();
 
     this.hubConnection.on('GroupNotification', (user: string, message: string) => {
@@ -48,6 +50,10 @@ export class LinqestService {
 
     this.hubConnection.on('sendTurn', (message: any) => {
       console.log(message)
+    })
+
+    this.hubConnection.on('RecieveChat', (message: any) => {
+      this.chatSubject.next(message)
     })
     
     this.router.events.pipe(filter((rs): rs is NavigationEnd => rs instanceof NavigationEnd))
@@ -81,6 +87,16 @@ export class LinqestService {
   }
 
   createRoom(obj : {name : string, dimension: string, playersCount : string}){
-    return this._httpClient.post('http://localhost:5271/api/JoinRoom', obj)
+    return this._httpClient.post('http://192.168.133.9:5271/api/JoinRoom', obj)
+  }
+
+  SwitchTurns(roomName : string){
+    this.hubConnection.invoke('SwitchTurns', roomName)
+    .catch(err => console.error(err));
+  }
+
+  sendMessae(message : {RoomName : string | null, UserName: string | null, message: string}){
+    this.hubConnection.invoke('SendMessage', message)
+    .catch(err => console.error(err));
   }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { LinqestService } from '../../services/linqest.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TimerComponent } from '../timer/timer.component';
 
 @Component({
   selector: 'app-join-room',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, TimerComponent],
   templateUrl: './join-room.component.html',
   styleUrl: './join-room.component.scss'
 })
@@ -19,7 +20,7 @@ export class JoinRoomComponent {
     this.joinRoomForm = this._fb.group({
       name : ['',[Validators.required]],
       color : ['',[Validators.required]],
-      roomname : ['testRoom1',[Validators.required]],
+      roomname : ['',[Validators.required]],
     })
 
     this.createRoomForm = this._fb.group({

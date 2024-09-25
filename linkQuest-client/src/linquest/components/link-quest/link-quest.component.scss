@@ -3,8 +3,9 @@
     position: relative;
 
     .each-cell{
-        position: absolute;
-        top: 0;
+        // position: absolute;
+        // top: 0;
+        display: flex;
     }
 
     .each-row{
@@ -27,4 +28,18 @@
 
 .active-user{
     border: 1px solid green;
+}
+
+.linquest-container{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
+.linquest-player{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 250px;
 }
