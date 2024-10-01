@@ -1,21 +1,25 @@
 <div class="">
-    <div class="chats">
-        @for( item of (chatsList$ | async); track $index )
+    <div class="chats" >
+        @for( item of (chatsList$ | async).slice().reverse(); track $index )
         {
-            <div class="each-chat" [class.m-l-a]="item.userName==userName">
+            <div class="each-chat" [class.m-l-a]="item.userName==userName" #chat>
                 @if (item.userName!=userName) {
                     <span class="username" >{{item?.userName}}</span>
                 }
-                <span class="usermessage">{{item?.message}}</span>
+                <pre class="usermessage">{{item?.message}}</pre>
             </div>
         }
     </div>
     
     <div class="chatwindow">
+        <!-- <select name="" id="" #name>
+        <option value="mohsin">mohsin</option>
+        <option value="hemanth">hemanth</option>
+    </select> -->
         <div class="chatinput">
             <textarea type="text" [(ngModel)]="myMessage" (keyup.enter)="sendMessage()"></textarea>
         </div>
-        <button class="icon" (click)="sendMessage()"> send</button>
+        <button class="icon" (click)="sendMessage()">send</button>
     </div>
 
 </div>
