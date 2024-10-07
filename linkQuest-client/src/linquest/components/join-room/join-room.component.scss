@@ -1,0 +1,106 @@
+$bg-color:black;
+$txt-color:white;
+
+//new labadmin
+@mixin container($bg-color,$width:70%,$height:60%,$radius:15px)
+{
+    width:$width;
+    height: $height;
+    background-color: $bg-color;
+    @if $radius !=0 {
+        border-radius: $radius;
+    }
+    color: var($txt-color);
+}
+.container{
+    width:100%;
+    height:100%;
+    background: #3e3e3e;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.joining-container{
+    @include container( rgb(237, 237, 237),70%, 60%);
+    display: flex;
+    justify-content: space-between;
+
+}
+.color-palate{
+    display: flex;    
+    justify-content: center;
+    :first-child{
+        border-radius: 5px 0px 0px 5px;
+    }
+    :last-child{
+        border-radius: 0px 5px 5px 0px;
+    }
+}
+.each-palate{
+    min-width:  70px;
+    height:30px;
+}
+.join-room{
+    background: black;
+    width:100%;
+    margin:1rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .header{
+        margin-top: 5%;
+        margin-bottom: 10%;
+        color: whitesmoke;
+    }
+    
+    app-input-box:last-child{
+        margin-top: 2%;
+    }
+        
+}
+.flex-center{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+}
+.create-room{
+    @extend .flex-center;
+    margin:1rem;
+    .header{
+        margin-top: 5%;
+        margin-bottom: 3%;
+       
+    }
+}
+.waiting-container{
+    @include container(rgb(240, 239, 239),70%,60%);
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.each-member{
+    width:75%;
+    height:30px;
+    text-align: center;
+    padding:5px 20px;
+    color:black;
+    border-radius: 5px;
+}
+.chips{
+    display: flex;
+    gap:1rem;
+}
+.text-center{
+    text-align: center;
+}
+.create-room{
+    width:100%
+}
+
+.outline{
+    outline: 3px solid white;
+    z-index: 1;
+}

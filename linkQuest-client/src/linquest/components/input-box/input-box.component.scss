@@ -1,0 +1,13 @@
+
+#cstinput,input{
+    padding: 10px 10px 2px 10px;
+    background: black;
+    color:white;
+    border:none;
+    border-bottom: 3px solid grey;
+    font-size: 20px;
+}
+#cstinput,input:focus{
+outline: none;
+border-bottom: 3px solid rgb(232, 232, 232);
+}

@@ -23,3 +23,82 @@
 @else {
     <h1>Waiting for others</h1>
 }
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" [value]="status" (change)="status= !status">
+    <label for="flexSwitchCheckChecked">{{!status?'create room':'waiatingroom'}}</label>
+ </div>  
+<!-- new design implementation -->
+<div class="container">
+    @if(status)
+    {
+        <div class="joining-container" >
+            <div class="join-room">
+                <div class="header">
+                      <h1>JOIN ROOM</h1>  
+                </div>    
+                <app-input-box>
+                    <input type="text" class="text-center" placeholder="Your Friends Call You By???">
+                </app-input-box>
+                <app-input-box class="mt-3">
+                    <input type="text" class="text-center" placeholder=" Secret Code">
+                </app-input-box>
+               
+            </div>
+            <div class="create-room">
+                <div class="header">
+                    <h1>CREATE ROOM</h1>
+                </div>
+                <div class="flex-center mb-2">
+                    <span >Select The Number of Players</span>
+                    <div class="chips mt-2">
+                        @for(item of ([].constructor(numberOfPlayers));track $index)
+                        {
+                            
+                            <app-chips (click)="playerSelectionModel.toggle($index)" [selected]="playerSelectionModel.isSelected($index)">{{($index+1)}}</app-chips>
+                        }
+                    </div>
+                </div>
+                <div class="flex-center">
+                    <span>Select The Matrix</span>
+                    <div class="chips  mt-2">
+                        @for(item of (matrixList);track $index)
+                        {
+                            <app-chips (click)="matrixSelectionModel.toggle(item.id)" [selected]="matrixSelectionModel.isSelected(item.id)">{{item.matrix }} X {{ item.matrix}}</app-chips>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @else {
+
+        <div class="waiting-container"  >
+            <div>crown</div>
+            <div class="">
+                <div class="header mt-5 text-center">
+                        {{playerName | uppercase}}
+                </div>
+                <div class="color-palate mt-2">
+                    @for(item of players;track $index)
+                   {
+                       <span class="each-palate" [style]="'background-color:'+item.color" [class.outline]="playerName==item.name" >
+                       </span>
+                   }
+                </div>
+                <div class="members mt-3 flex-center">
+                   @for(item of players;track $index)
+                   {
+                       <div class="each-member text-center mt-2" [style]="'background-color:'+item.color">
+                            {{item.name |uppercase}}
+                       </div>
+                   }
+                </div>
+    
+            </div>
+            <div class="d-flex flex-column justify-content-between align-items-end " style="margin-right: 25px;">
+                <div class="mt-2">Logout</div>
+                <div class="mb-3">Loading ...!</div>
+            </div>
+        </div>
+    }
+</div>

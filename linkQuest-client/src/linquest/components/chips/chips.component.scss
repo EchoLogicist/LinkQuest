@@ -1,0 +1,18 @@
+.squre-button{
+    border:1px solid black;
+    border-radius: 5px;
+    padding:5px 15px;;
+    width:fit-content;
+    cursor:pointer !important;
+    
+}
+.squre-button:hover{
+   background-color: black;
+   color: white;
+   cursor: pointer !important;
+
+}
+.squre-button-selected{
+    background-color: black;
+   color: white;
+}
