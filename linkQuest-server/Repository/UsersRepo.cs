@@ -50,6 +50,13 @@ namespace linkQuest_server.Repository
             return true;
         }
 
+        public bool UpdateColor(Users user, string color)
+        {
+            var tempUser = users.Find((j) => j.Name == user.Name && j.RoomName == user.RoomName && user.ConnectionId == j.ConnectionId)!;
+            tempUser.Color = color;
+            return true;
+        }
+
         public void getUserTurn(string roomName, int timeLapse){
             var tempUsers = GetUsers(roomName);
             var index = tempUsers.FindIndex((j) => j.myTurn);

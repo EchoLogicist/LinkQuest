@@ -9,7 +9,7 @@ builder.Services.AddCors(options =>
             {
                 options.AddPolicy("allowany", p =>
                 {
-                    p.WithOrigins(["http://192.168.173.82:4500","http://localhost:4500"])
+                    p.WithOrigins(["http://192.168.173.0:4500","http://localhost:4500"])
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();

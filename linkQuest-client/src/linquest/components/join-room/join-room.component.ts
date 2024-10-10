@@ -48,10 +48,15 @@ export class JoinRoomComponent implements OnInit {
     })  
     this.players=[{name:'mohsin',color:'red'},{name:'hemanth',color:'blue'},{name:'khanam',color:'pink'}]
 
+    this.joinRoomForm.valueChanges.subscribe((joinRoom : {roomname : string, name: string, color: string}) => {
+      if(joinRoom.name && joinRoom.roomname && joinRoom.roomname.length == 4){
+       this.send({roomname : joinRoom.roomname, name : joinRoom.name})
+      }
+    })
   }
   
-  send(){
-    this._linqService.joinRoom(this.joinRoomForm.value).then((res : string) =>{
+  send(joinRoom : any){
+    this._linqService.joinRoom(joinRoom).then((res : string) =>{
       if(res.toLowerCase() == 'success' || res.toLowerCase() == 'rejoined'){
         this.hasJoined = true
         sessionStorage.setItem("playername", this.joinRoomForm.value.name);

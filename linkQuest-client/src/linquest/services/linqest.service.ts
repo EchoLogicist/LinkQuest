@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { filter, Subject } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,11 +17,14 @@ export class LinqestService {
   usersObject$ = this.gameUsersSubject.asObservable()
   private chatSubject : Subject<any> = new Subject()
   chatObject$ = this.chatSubject.asObservable()
+  API_URL : string = ''
 
 
   constructor(private router: Router, private _httpClient : HttpClient) {
+    this.API_URL = environment.API_URL;
+
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('http://192.168.133.26:5271/linkquest')
+      .withUrl(`${this.API_URL}/linkquest`)
       .build();
 
     this.hubConnection.on('GroupNotification', (user: string, message: string) => {
@@ -87,7 +90,7 @@ export class LinqestService {
   }
 
   createRoom(obj : {name : string, dimension: string, playersCount : string}){
-    return this._httpClient.post('http://192.168.133.26:5271/api/JoinRoom', obj)
+    return this._httpClient.post(`${this.API_URL}/api/JoinRoom`, obj)
   }
 
   SwitchTurns(roomName : string){

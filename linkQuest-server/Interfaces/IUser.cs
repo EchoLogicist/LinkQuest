@@ -16,5 +16,6 @@ namespace linkQuest_server.Interfaces
         bool UpdateConnectionId(string connectionId, Users user);
         bool updateCount(string roomName, string userName, int timeLapse);
         void getUserTurn(string roomName, int timeLapse);
+        bool UpdateColor(Users user, string color);
     }
 }

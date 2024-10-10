@@ -82,6 +82,14 @@ namespace linkQuest_server
             }
         }
 
+        public void UpdateColor(string color){
+            var user = _user.GetUser(Context.ConnectionId);
+            if(user != null){
+                _user.UpdateColor(user, color);
+                SendConnectedUser(user.RoomName);                
+            }
+        }
+
         public void SwitchTurns(string roomName){
             var roomInfo = _rooms.GetRoom(roomName)!;
             _user.getUserTurn(roomName, roomInfo.ElapseTime);

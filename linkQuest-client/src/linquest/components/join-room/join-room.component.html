@@ -1,9 +1,8 @@
 <section class="body-feature">
-    <div style="display: none;">
+    <!-- <div style="display: none;">
 @if(!hasJoined){
     <form [formGroup]="joinRoomForm">
         <input type="text" formControlName="name" placeholder="User Name">
-        <!-- <input type="text" formControlName="color" placeholder="Color"> -->
         <select formControlName="color">
             <option value="">Select Color</option>
             <option>Red</option>
@@ -25,132 +24,137 @@
 @else {
     <h1>Waiting for others</h1>
 }
-</div>
-<div class="form-check form-switch">
+</div> -->
+
+
+<!-- <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" [value]="status" (change)="status= !status">
     <label for="flexSwitchCheckChecked">{{!status?'create room':'waiatingroom'}}</label>
- </div>  
+ </div>   -->
 <!-- new design implementation -->
- 
-<div class="container" style="display: none;">
-    @if(status)
-    {
-        <div class="joining-container" >
-            <div class="join-room">
-                <div class="header">
-                      <h1>JOIN ROOM</h1>  
-                </div>    
-                <app-input-box >
-                    <input cstinput="dark" type="text" class="text-center" placeholder="Your Friends Call You By???">
-                </app-input-box>
-                <app-input-box class="" >
-                    <input type="text" cstinput="dark"
-                     class="text-center" placeholder=" Secret Code">
-                </app-input-box>
-               
-            </div>
-            <div class="create-room">
-                <div class="header">
-                    <h1>CREATE ROOM</h1>
-                </div>
-                <div class="flex-center ">
-                    <span >Select The Number of Players</span>
-                    <div class="chips mt-2">
-                        @for(item of ([].constructor(numberOfPlayers));track $index)
-                        {
-                            
-                            <app-chips (click)="playerSelectionModel.toggle($index)" [selected]="playerSelectionModel.isSelected($index)">{{($index+1)}}</app-chips>
-                        }
+@if (matrixSelectionModel.selected.length == 0 || playerSelectionModel.selected.length == 0) {
+    <div class="lq-container" >
+        @if(!hasJoined)
+        {
+            <div class="joining-container" >
+                <form class="join-room" [formGroup]="joinRoomForm">
+                    <div class="header">
+                          <h1>JOIN ROOM</h1>  
+                    </div>    
+                    <app-input-box >
+                        <input cstinput="dark"  formControlName="name" type="text" class="text-center" placeholder="Your Friends Call You By???">
+                    </app-input-box>
+                    <app-input-box class="" >
+                        <input type="text" cstinput="dark" formControlName="roomname" class="text-center" placeholder=" Secret Code">
+                    </app-input-box>
+                   
+                </form>
+                <div class="create-room">
+                    <div class="header">
+                        <h1>CREATE ROOM</h1>
+                    </div>
+                    <div class="flex-center ">
+                        <span >Select The Number of Players</span>
+                        <div class="chips mt-2">
+                            @for(item of ([].constructor(numberOfPlayers));track $index)
+                            {
+                                
+                                <app-chips (click)="playerSelectionModel.toggle($index)" [selected]="playerSelectionModel.isSelected($index)">{{($index+1)}}</app-chips>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex-center">
+                        <span>Select The Matrix</span>
+                        <div class="chips  mt-2">
+                            @for(item of (matrixList);track $index)
+                            {
+                                <app-chips (click)="matrixSelectionModel.toggle(item.id)" [selected]="matrixSelectionModel.isSelected(item.id)">{{item.matrix }} X {{ item.matrix}}</app-chips>
+                            }
+                        </div>
                     </div>
                 </div>
-                <div class="flex-center">
-                    <span>Select The Matrix</span>
-                    <div class="chips  mt-2">
-                        @for(item of (matrixList);track $index)
-                        {
-                            <app-chips (click)="matrixSelectionModel.toggle(item.id)" [selected]="matrixSelectionModel.isSelected(item.id)">{{item.matrix }} X {{ item.matrix}}</app-chips>
-                        }
+            </div>
+        }
+        @else {
+    
+            <div class="waiting-container"  >
+                <div class="hostname">
+                   <div class="d-flex align-containt-center">
+                       <svg fill="#3be5f1" height="15%" width="15%" version="1.1" id="Capa_1" class="svg-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 220.00 220.00" xml:space="preserve" stroke="#3be5f1" transform="rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.44000000000000006"></g><g id="SVGRepo_iconCarrier"> <path d="M220,98.865c0-12.728-10.355-23.083-23.083-23.083s-23.083,10.355-23.083,23.083c0,5.79,2.148,11.084,5.681,15.14 l-23.862,21.89L125.22,73.002l17.787-20.892l-32.882-38.623L77.244,52.111l16.995,19.962l-30.216,63.464l-23.527-21.544 c3.528-4.055,5.671-9.344,5.671-15.128c0-12.728-10.355-23.083-23.083-23.083C10.355,75.782,0,86.137,0,98.865 c0,11.794,8.895,21.545,20.328,22.913l7.073,84.735H192.6l7.073-84.735C211.105,120.41,220,110.659,220,98.865z"></path> </g></svg>
+                       <h1 class="mx-2">{{playerName |uppercase}}</h1>
                     </div>
                 </div>
-            </div>
-        </div>
-    }
-    @else {
-
-        <div class="waiting-container"  >
-            <div class="hostname">
-               <div class="d-flex align-containt-center">
-                   <svg fill="#3be5f1" height="15%" width="15%" version="1.1" id="Capa_1" class="svg-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 220.00 220.00" xml:space="preserve" stroke="#3be5f1" transform="rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.44000000000000006"></g><g id="SVGRepo_iconCarrier"> <path d="M220,98.865c0-12.728-10.355-23.083-23.083-23.083s-23.083,10.355-23.083,23.083c0,5.79,2.148,11.084,5.681,15.14 l-23.862,21.89L125.22,73.002l17.787-20.892l-32.882-38.623L77.244,52.111l16.995,19.962l-30.216,63.464l-23.527-21.544 c3.528-4.055,5.671-9.344,5.671-15.128c0-12.728-10.355-23.083-23.083-23.083C10.355,75.782,0,86.137,0,98.865 c0,11.794,8.895,21.545,20.328,22.913l7.073,84.735H192.6l7.073-84.735C211.105,120.41,220,110.659,220,98.865z"></path> </g></svg>
-                   <h1 class="mx-2">{{playerName |uppercase}}</h1>
+                <div class="player-info">
+                    <div class="header  text-center">
+                            {{playerName | uppercase}}
+                    </div>
+                    <div class="color-palate ">
+                        @for(item of players;track $index)
+                       {
+                           <span class="each-palate" [style]="'background-color:'+item.color" [class.outline]="playerName==item.name" >
+                           </span>
+                       }
+                    </div>
+                    <div class="members  flex-center">
+                       @for(item of players;track $index)
+                       {
+                           <div class="each-member text-center mt-2" [style]="'background-color:'+item.color">
+                                {{item.name |uppercase}}
+                           </div>
+                       }
+                    </div>
+        
+                </div>
+                <div class="d-flex flex-column justify-content-between align-items-end " style="margin-right: 25px; margin-top:4%;">
+                    <div class="mt-2">
+                        <svg viewBox="0 0 24 24" fill="none" class="svg-color" height="30px" width="30px"  xmlns="http://www.w3.org/2000/svg" stroke="#dedede"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12L13 12" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </div>
+                    <div class="mb-3">Loading ...!</div>
                 </div>
             </div>
-            <div class="player-info">
-                <div class="header  text-center">
-                        {{playerName | uppercase}}
-                </div>
-                <div class="color-palate ">
-                    @for(item of players;track $index)
-                   {
-                       <span class="each-palate" [style]="'background-color:'+item.color" [class.outline]="playerName==item.name" >
-                       </span>
-                   }
-                </div>
-                <div class="members  flex-center">
-                   @for(item of players;track $index)
-                   {
-                       <div class="each-member text-center mt-2" [style]="'background-color:'+item.color">
-                            {{item.name |uppercase}}
-                       </div>
-                   }
-                </div>
+        }
+    </div>
+}
+@else {
+    <div class="lq-container"> 
+        <div class="host-container flex-center">
+            <div class="header">
+                <h1>Make Your Game More Colorful
+                    Create</h1>
     
             </div>
-            <div class="d-flex flex-column justify-content-between align-items-end " style="margin-right: 25px; margin-top:4%;">
-                <div class="mt-2">
-                    <svg viewBox="0 0 24 24" fill="none" class="svg-color" height="30px" width="30px"  xmlns="http://www.w3.org/2000/svg" stroke="#dedede"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12L13 12" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            <div class="inupt-name">
+                <app-input-box>
+                    <input type="text" placeholder="I Guess We Missed Your Name" cstinput="light">
+                </app-input-box>
+            </div>
+            <div class="players-matrix">
+                <div class="players chips">
+                    @for(item of ([].constructor(numberOfPlayers));track $index)
+                            {
+                                
+                                <app-chips (click)="playerSelectionModel.select($index)" [selected]="playerSelectionModel.isSelected($index)">{{($index+1)}}</app-chips>
+                            }
                 </div>
-                <div class="mb-3">Loading ...!</div>
+                <div class="matrix chips">
+                    @for(item of (matrixList);track $index)
+                    {
+                        <app-chips (click)="matrixSelectionModel.select(item.id)" [selected]="matrixSelectionModel.isSelected(item.id)">{{item.matrix }} X {{ item.matrix}}</app-chips>
+                    }
+                </div>
             </div>
-        </div>
-    }
-</div>
-<div class="container mt-2"> 
-    <div class="host-container flex-center">
-        <div class="header">
-            <h1>Make Your Game More Colorful
-                Create</h1>
-
-        </div>
-        <div class="inupt-name">
-            <app-input-box>
-                <input type="text" placeholder="I Guess We Missed Your Name" cstinput="light">
-            </app-input-box>
-        </div>
-        <div class="players-matrix">
-            <div class="players chips">
-                @for(item of ([].constructor(numberOfPlayers));track $index)
-                        {
-                            
-                            <app-chips (click)="playerSelectionModel.toggle($index)" [selected]="playerSelectionModel.isSelected($index)">{{($index+1)}}</app-chips>
-                        }
+            <div class="color-plalates">
+                <div class="palates">
+                    
+                </div>
             </div>
-            <div class="matrix chips">
-                @for(item of (matrixList);track $index)
-                {
-                    <app-chips (click)="matrixSelectionModel.toggle(item.id)" [selected]="matrixSelectionModel.isSelected(item.id)">{{item.matrix }} X {{ item.matrix}}</app-chips>
-                }
+            <div class="create-btn">
+                <button class="button-lg">
+                    Create Room
+                </button>
             </div>
-        </div>
-        <div class="color-plalates">
-            <div class="palates">
-                
-            </div>
-        </div>
-        <div class="create-btn">
-            <button class="button-lg">
-                Create Room
-            </button>
         </div>
     </div>
-</div>
+}
+
 </section>
