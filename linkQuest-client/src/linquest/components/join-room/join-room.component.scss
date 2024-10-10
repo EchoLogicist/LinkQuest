@@ -11,19 +11,30 @@ $txt-color:white;
         border-radius: $radius;
     }
     color: var($txt-color);
+    .svg-fill{
+        fill: invert($color: $bg-color);
+    }
+    .svg-color{
+        path{
+            stroke:invert($color: $bg-color)
+        }
+    }
+}
+.body-feature{
+    background: #3e3e3e;
+    height: 100%;
+    width: 100%;
 }
 .container{
     width:100%;
     height:100%;
-    background: #3e3e3e;
-    height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
 
 }
 .joining-container{
-    @include container( rgb(237, 237, 237),70%, 60%);
+    @include container( rgb(237, 237, 237),85%, 60%);
     display: flex;
     justify-content: space-between;
 
@@ -31,6 +42,7 @@ $txt-color:white;
 .color-palate{
     display: flex;    
     justify-content: center;
+    margin: 0px 10%;
     :first-child{
         border-radius: 5px 0px 0px 5px;
     }
@@ -39,7 +51,7 @@ $txt-color:white;
     }
 }
 .each-palate{
-    min-width:  70px;
+    width:100%;
     height:30px;
 }
 .join-room{
@@ -47,17 +59,19 @@ $txt-color:white;
     width:100%;
     margin:1rem;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 40% 20% 20%;
+    gap:2%;
     .header{
-        margin-top: 5%;
-        margin-bottom: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         color: whitesmoke;
     }
     
     app-input-box:last-child{
-        margin-top: 2%;
+        // margin-top: 2%;
     }
         
 }
@@ -67,22 +81,41 @@ $txt-color:white;
     flex-direction: column;
 }
 .create-room{
-    @extend .flex-center;
+   
     margin:1rem;
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 40% 20% 20%;
+    
     .header{
-        margin-top: 5%;
-        margin-bottom: 3%;
        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
     }
 }
 .waiting-container{
-    @include container(rgb(240, 239, 239),70%,60%);
+    @include container(rgb(240, 239, 239),80%,60%);
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-}
+    .hostname{
+        margin-left: 10%;
+        margin-top: 10%;
+    }
+    .player-info{
+        display: grid;
+    align-items: center;
+    grid-template-rows: 5% 20% 60%;
+    padding-top: 15%;
+    }
+    .members{
+        gap:10px;
+    }
 
+}
 .each-member{
-    width:75%;
+    width:50%;
     height:30px;
     text-align: center;
     padding:5px 20px;
@@ -104,3 +137,25 @@ $txt-color:white;
     outline: 3px solid white;
     z-index: 1;
 }
+.host-container{
+    @include container(#e9ecef,70%,80%);
+    .header{
+        margin-top: 2%;
+    }
+    .players-matrix{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3vw;
+        margin: 2%;
+    }
+    .inupt-name{
+        margin-top: 3%;
+    }
+}
+.button-lg{
+    padding:10px 20px;
+    background-color: black;
+    color:white;
+    border-radius: 1vh;
+}
+
