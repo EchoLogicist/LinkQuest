@@ -167,3 +167,28 @@ $txt-color:white;
     border-radius: 1vh;
 }
 
+///palates
+.color-plalates{
+display: grid;
+grid-template-columns: repeat(5,1fr);
+gap:20px;
+width: 50vw;
+
+    
+}
+.palates{
+        display: flex;    
+        justify-content: center;
+        margin: 0px 10%;
+        :first-child{
+            border-radius: 5px 0px 0px 5px;
+        }
+        :last-child{
+            border-radius: 0px 5px 5px 0px;
+        }
+}
+.each-palates{
+    height: 20px;
+    width: 100%;
+}
+

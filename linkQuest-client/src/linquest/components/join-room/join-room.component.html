@@ -144,9 +144,15 @@
                 </div>
             </div>
             <div class="color-plalates">
+                @for (k of [].constructor(10); track $index){
                 <div class="palates">
+                    @for (i of colorPalate; track $index) {
+                    <div class="each-palates" [style.background-color]="i.color"> 
+                    </div>
+                }
                     
                 </div>
+            }
             </div>
             <div class="create-btn">
                 <button class="button-lg">

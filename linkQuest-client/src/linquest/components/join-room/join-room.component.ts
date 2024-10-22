@@ -28,6 +28,7 @@ export class JoinRoomComponent implements OnInit {
   players:any=[]
   playerName:string='khanam'
   status:boolean=true;
+  colorPalate=[{id:1,color:'#6C08EE'},{id:2,color:'#24034E'},{id:3,color:'#D5BEF3'},{id:4,color:'#5B506A'}]
 
   constructor(private _linqService: LinqestService, private _fb: FormBuilder){
     this.joinRoomForm = this._fb.group({
