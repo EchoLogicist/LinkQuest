@@ -39,12 +39,13 @@ namespace linkQuest_server
                 if(users.Count == roomInfo.playersCount)
                 {
                     _rooms.UpdateRoom(user.RoomName);   
-                    await Clients.Group(user.RoomName).SendAsync("StartGame", "Lets Program Bot", $"Game Start", DateTime.Now);                 
-                    _user.getUserTurn(user.RoomName, roomInfo.ElapseTime);
-                    await GameObject(user.RoomName);    
+                    CanStartGame(user.RoomName, false);
+                    //await Clients.Group(user.RoomName).SendAsync("StartGame", "Lets Program Bot", $"Game Start", DateTime.Now);                 
                 }
+
+                await Clients.Group(user.RoomName).SendAsync("colorSelected", roomInfo.colorPalette);  
                 await SendConnectedUser(user.RoomName);
-                return await Task.Run(() => "Success");
+                return await Task.Run(() => new { data = roomInfo, status = "joined" });
             }
             else {
                 if(roomInfo != null)
@@ -52,13 +53,14 @@ namespace linkQuest_server
                     if(_user.IsUserExists(user.Name, user.RoomName)){
                         await Groups.AddToGroupAsync(Context.ConnectionId, user.RoomName);
                         UpdateContextId(Context.ConnectionId, user);
-                        await Clients.Caller.SendAsync("StartGame", "Rejoined");
+                        var userInfo = _user.GetUser(Context.ConnectionId);
+                        CanStartGame(user.RoomName, true);
+                        //await Clients.Caller.SendAsync("StartGame", "Rejoined");
                         await GameObject(user.RoomName);
-                        await SendConnectedUser(user.RoomName);
-                        return await Task.Run(() => "Rejoined");
+                        return await Task.Run(() => new { data = userInfo , status = "rejoined" });
                     }                             
                 }
-                return await Task.Run(() => $"No active room is present with the name {user.RoomName}");
+                return await Task.Run(() => new { data = $"No active room is present with the name {user.RoomName}", status = "No Room Present" });
             }
         }
         public Task SendConnectedUser(string roomName)
@@ -107,5 +109,56 @@ namespace linkQuest_server
             if(_message.AddMessage(message)) messages = _message.GetMessages(message.RoomName);
             return Clients.Group(message.RoomName).SendAsync("RecieveChat", messages);
         }
+
+        public async Task<object> CreateRoomAndJoin(RoomInfo room){
+            var roomCode = _rooms.CreateRoom(room);
+            if (!string.IsNullOrEmpty(roomCode)){
+                await JoinRoom(new Users{ Name = room.PlayerName, RoomName = roomCode, isHost = true, ConnectionId = Context.ConnectionId});
+            }
+            return await Task.Run(() => new { data = _rooms.GetRoom(roomCode), roomCode});
+        }
+
+        public void PickColor(PlayerColor playerColor){
+            var color =_user.UpdateColor(playerColor);
+            SendConnectedUser(playerColor.RoomName);
+            var room = _rooms.GetRoom(playerColor.RoomName);
+            if(!string.IsNullOrEmpty(color)){
+                room.colorPalette.Find(j => j.Color == color).Picked = false;
+            }
+            room.colorPalette.Find(j => j.Color == playerColor.Color).Picked = true;
+            CanStartGame(playerColor.RoomName, false);
+            Clients.Group(playerColor.RoomName).SendAsync("colorSelected", room.colorPalette);
+        }
+
+        private void CanStartGame(string roomName, bool rejoined){
+            var room = _rooms.GetRoom(roomName);
+            var remaningColors = room.colorPalette.FindAll((j) => !j.Picked);
+            if(remaningColors.Count == 0 && room.isLocked){
+                // if(remaningColors.Count == 1) {
+                //     _user.UpdateColor()
+                // }
+                Clients.Group(roomName).SendAsync("StartGame", $"Game Start", DateTime.Now);  
+                GameObject(roomName);
+                if(!rejoined)  _user.getUserTurn(roomName, room.ElapseTime);  
+                SendConnectedUser(roomName);
+            }
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+        
+        // public Task<string> GetTime(string roomName){
+        //     var user = _user.GetUsers(roomName).Find((j) => j.myTurn);
+        //     var room = _rooms.GetRoom(roomName);
+        //     if(user == null){
+        //         _user.getUserTurn(roomName, room.ElapseTime);
+        //     }
+        //     else{
+        //         user.turnShiftTime -= 5;
+
+        //     }
+        // }
     }
 }

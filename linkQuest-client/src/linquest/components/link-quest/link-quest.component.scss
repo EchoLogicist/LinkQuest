@@ -21,9 +21,12 @@
 }
 
 .players-tab{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 10px;
+    font-size: 1.5rem;
+    font-family: 'Aguante';
+    gap: 20px;
 }
 
 .active-user{
@@ -35,11 +38,17 @@
     align-items: center;
     height: 100vh;
     justify-content: center;
+    background-color: #333333;
 }
 
 .linquest-player{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    //right: 5px;
+    //top: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 250px;
+    margin-left: 50px;
+    height: 100%;
 }

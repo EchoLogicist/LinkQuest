@@ -22,9 +22,9 @@ namespace linkQuest_server.Controllers
         {
             try
             {
-                if (_room.RoomExists(room.name)) return StatusCode(409, "Room already exists");
-                var roomCode = _room.CreateRoom(room);
-                if (!string.IsNullOrEmpty(roomCode)) return Ok(roomCode);
+                // if (_room.RoomExists(room.name)) return StatusCode(409, "Room already exists");
+                // //var roomCode = _room.CreateRoom(room);
+                // if (!string.IsNullOrEmpty(roomCode)) return Ok(roomCode);
                 return StatusCode(500, "Unable to process you request.");
             }
             catch (Exception ex)

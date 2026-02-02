@@ -14,6 +14,6 @@ namespace linkQuest_server.Interfaces
         bool RoomExists(string roomName);
         Room? GetRoom(string roomName);
         bool UpdateAvailabeCount(string roomName);
-        string CreateRoom(Room room);
+        string CreateRoom(RoomInfo room);
     }
 }

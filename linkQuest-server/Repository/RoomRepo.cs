@@ -30,9 +30,9 @@ namespace linkQuest_server.Repository
         public void UpdateRoom(string roomName, State state = State.NEW)
         {
             var index = rooms.FindIndex((room) => room.name == roomName);
-            if(index != -1 && state == State.STARTED){                
+            if(index != -1){                
                 rooms[index].isLocked = true;
-                rooms[index].gameState = state;
+                if(state == State.STARTED) rooms[index].gameState = state;
             }
         }
 
@@ -52,15 +52,19 @@ namespace linkQuest_server.Repository
             return true;
         }
 
-        public string CreateRoom(Room room)
+        public string CreateRoom(RoomInfo room)
         {
             try
             {
-                room.cellsPending = (int)Math.Pow(room.dimension, 2);
-                room.name = GenerateRandomNo();
-                room.ElapseTime = Convert.ToInt32(_configuration.GetSection("LapsTime").Value);
-                rooms.Add(room);
-                return room.name;                
+                var tempRoom = new Room();
+                tempRoom.cellsPending = (int)Math.Pow(room.Dimension, 2);
+                tempRoom.name = GenerateRandomNo();
+                tempRoom.dimension = room.Dimension;
+                tempRoom.playersCount = room.playersCount;
+                tempRoom.ElapseTime = Convert.ToInt16(_configuration.GetSection("LapsTime").Value);
+                tempRoom.colorPalette = room.colorPalette.Split(',').Select((color) => new ColorPalette{ Color = color, Picked = false}).ToList();
+                rooms.Add(tempRoom);
+                return tempRoom.name;                
             }
             catch (Exception)
             {

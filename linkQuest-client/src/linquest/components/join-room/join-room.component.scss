@@ -107,29 +107,68 @@ $txt-color:white;
     @include container(rgb(240, 239, 239),80%,60%);
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+
     .hostname{
         margin-left: 10%;
         margin-top: 10%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
+
+    .section-1{
+        display: flex;
+        align-items: center;
+
+        img{
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        span{
+            font-size: 2.5rem;
+            font-family: 'Aguante';
+        }
+    }
+
     .player-info{
-        display: grid;
-    align-items: center;
-    grid-template-rows: 5% 20% 60%;
-    padding-top: 15%;
+        // display: grid;
+        // align-items: center;
+        // grid-template-rows: 5% 20% 60%;
+        padding-top: 9%;
+
+        .header{
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Aguante';
+        }
+
+        .main-img{
+            width: 50px;
+            margin-right: 10px;
+        }
     }
+
     .members{
         gap:10px;
+        margin-top: 36px;
     }
 
 }
 .each-member{
-    width:50%;
-    height:30px;
+    width:45%;
+    height:36px;
+    border: 1px solid black;
     text-align: center;
     padding:5px 20px;
     color:black;
     border-radius: 5px;
+    font-family: 'Aguante';
+    font-size: 1.2rem;
 }
+
 .chips{
     display: flex;
     gap:1rem;
@@ -146,20 +185,31 @@ $txt-color:white;
     z-index: 1;
 }
 .host-container{
-    @include container(#e9ecef,70%,80%);
+
+    @include container(#e9ecef,70%,60%);
+    gap: 25px;
+
     .header{
         margin-top: 2%;
+
+        span{
+            font-size: 3rem;
+            font-family: 'Ruthless';
+        }
     }
+
     .players-matrix{
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 3vw;
         margin: 2%;
     }
-    .inupt-name{
-        margin-top: 3%;
-    }
+
+    // .inupt-name{
+    //     margin-top: 3%;
+    // }
 }
+
 .button-lg{
     padding:10px 20px;
     background-color: black;
@@ -192,3 +242,14 @@ width: 50vw;
     width: 100%;
 }
 
+
+.block-selection{
+    border: 2px solid purple;
+    cursor: not-allowed;
+}
+
+.joining-room-text{
+    font-family: 'Ruthless';
+    font-size: 1.6rem;
+    text-wrap: nowrap;
+}

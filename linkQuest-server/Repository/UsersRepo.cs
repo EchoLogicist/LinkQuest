@@ -36,10 +36,10 @@ namespace linkQuest_server.Repository
             return users.Exists((j) => j.Name == userName && j.RoomName == roomName);
         }
         
-        public bool updateCount(string roomName, string userName, int timeLapse){
+        public bool updateCount(string roomName, string userName, short timeLapse){
             var user = users.Find((j) => j.Name == userName && j.RoomName == roomName)!;
             user.count += 1;
-            user.turnShiftTime = DateTime.Now.AddSeconds(timeLapse);
+            user.turnShiftTime = timeLapse;
             return true;
         }
 
@@ -57,7 +57,7 @@ namespace linkQuest_server.Repository
             return true;
         }
 
-        public void getUserTurn(string roomName, int timeLapse){
+        public void getUserTurn(string roomName, short timeLapse){
             var tempUsers = GetUsers(roomName);
             var index = tempUsers.FindIndex((j) => j.myTurn);
             if(index == -1 || index + 1 >= tempUsers.Count){
@@ -72,10 +72,18 @@ namespace linkQuest_server.Repository
             }
         }
 
-        private void UpdateUser(Users user, bool myTurn, int timeLapse = 0){
+        private void UpdateUser(Users user, bool myTurn, short timeLapse = 0){
             user.myTurn = myTurn;
-            if(myTurn) user.turnShiftTime = DateTime.Now.AddSeconds(timeLapse);
-            else user.turnShiftTime = null;
+            if(myTurn) user.turnShiftTime = timeLapse;
+            else user.turnShiftTime = 0;
+        }
+
+        public string UpdateColor(PlayerColor player)
+        {
+            var user = users.Find((j) => j.Name == player.PlayerName && j.RoomName == player.RoomName)!;
+            var color = user.Color;
+            user.Color = player.Color;
+            return color;
         }
     }
 }

@@ -17,8 +17,32 @@ export class LinqestService {
   usersObject$ = this.gameUsersSubject.asObservable()
   private chatSubject : Subject<any> = new Subject()
   chatObject$ = this.chatSubject.asObservable()
+  private colorSubject : Subject<any> = new Subject()
+  colorObject$ = this.colorSubject.asObservable()
   API_URL : string = ''
-
+  result : any = {users : [
+    {
+        "name": "moushin",
+        "color": "blue",
+        "roomName": "7349",
+        "connectionId": "CHGcdbgmyVPQUmp-LqMhhQ",
+        "count": 2,
+        "myTurn": true,
+        "turnShiftTime": 32,
+        "isHost": true
+    },
+    {
+        "name": "nourin",
+        "color": "red",
+        "roomName": "7349",
+        "connectionId": "acqN3LtZshrDWrWNVPmh8Q",
+        "count": 3,
+        "myTurn": false,
+        "turnShiftTime": 0,
+        "isHost": false
+    }
+]
+  }
 
   constructor(private router: Router, private _httpClient : HttpClient) {
     this.API_URL = environment.API_URL;
@@ -39,6 +63,10 @@ export class LinqestService {
       this.gameUsersSubject.next(user)
     });
 
+    this.hubConnection.on('colorSelected', (colors: any) => {
+      this.colorSubject.next(colors)
+    });
+
     this.hubConnection.on('IndividualNotification', (user: any) => {
       console.log(user);
     });
@@ -47,8 +75,10 @@ export class LinqestService {
       this.gameobjectsSubject.next(gameObject)
     })
 
-    this.hubConnection.on('EndGame', (message: any) => {
+    this.hubConnection.on('EndGame', (message: any, room : any, users : any) => {
       console.log(message)
+      this.result = {room : JSON.parse(room), users : users}
+      this.router.navigateByUrl("results")
     })
 
     this.hubConnection.on('sendTurn', (message: any) => {
@@ -100,6 +130,16 @@ export class LinqestService {
 
   sendMessae(message : {RoomName : string | null, UserName: string | null, message: string}){
     this.hubConnection.invoke('SendMessage', message)
+    .catch(err => console.error(err));
+  }
+
+  CreateRoomAndJoin(object : {playersCount : string | null, PlayerName: string | null, Dimension: number | undefined, colorPalette : string}){
+    return this.hubConnection.invoke('CreateRoomAndJoin', object)
+    .catch(err => console.error(err));
+  }
+
+  pickColor(object : {PlayerName: string | null, Color: string | undefined, RoomName : string}){
+    return this.hubConnection.invoke('PickColor', object)
     .catch(err => console.error(err));
   }
 }

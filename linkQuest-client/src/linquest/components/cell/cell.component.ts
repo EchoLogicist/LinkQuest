@@ -14,6 +14,8 @@ export class CellComponent implements OnInit{
   @Input() users : any = []
   @Input() rowIndex : number = 0
   @Input() columnIndex : number = 0
+  @Input() cellSide : string = '60px'
+  @Input() thickness : string = '8px'
   
   constructor(private _linqService: LinqestService) {}
 

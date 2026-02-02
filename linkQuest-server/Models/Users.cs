@@ -13,6 +13,7 @@ namespace linkQuest_server.Models
         public string ConnectionId {get; set;} = string.Empty;
         public int count {get; set;} = 0;
         public bool myTurn {get; set;} = false;
-        public DateTime? turnShiftTime {get; set;}
+        public short turnShiftTime {get; set;}
+        public bool isHost {get; set;}
     }
 }
